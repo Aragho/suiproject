@@ -16,21 +16,118 @@ import { GoHomeFill } from "react-icons/go";
 import { BsBarChartFill } from "react-icons/bs";
 import { FiGrid } from "react-icons/fi";
 import { GiCoins, GiMoneyStack } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
+import {parse, format} from "date-fns";
 
-const transactions = [
-  { id: 1, type: "Sent", amount: "-₦5,000", date: "Mar 24, 2025", status: "Completed" },
-  { id: 2, type: "Received", amount: "+₦12,000", date: "Mar 23, 2025", status: "Completed" },
-  { id: 3, type: "Airtime Purchase", amount: "-₦2,500", date: "Mar 22, 2025", status: "Pending" },
-  { id: 4, type: "Transfer", amount: "-₦10,000", date: "Mar 21, 2025", status: "Completed" },
-];
 
-const Homescreen2 = () => {
+const Homescreen2 = ({ transactions }) => {
+    
+    const navigate = useNavigate();
+    const [transaction, setTransactionList] = useState([]);
+
+
+    const transactionList = [
+        {
+          id: 1,
+          amount: "+₦2,500.00",
+          beneficiary: "NGOZI UCHE",
+          bank: "UNITED BANK OF AFRICA PLC",
+          accountNumber: "2007895421",
+          type: "INTER-BANK",
+          remarks: "Money for transport",
+          reference: "NGS000000667911237829202",
+          status: "Transfer Successful",
+          date: "Apr 23, 2025, 12:35PM",
+        },
+        {
+          id: 2,
+          amount: "-₦5,000.00",
+          beneficiary: "John Doe",
+          bank: "Zenith Bank",
+          accountNumber: "1002345678",
+          type: "INTRA-BANK",
+          remarks: "Payment for goods",
+          reference: "NGS000000667911237829203",
+          status: "Transfer Pending",
+          date: "Apr 24, 2025, 10:15AM",
+        },
+        {
+          id: 3,
+          amount: "+₦10,000.00",
+          beneficiary: "Grace Adebayo",
+          bank: "Access Bank",
+          accountNumber: "3004567890",
+          type: "INTER-BANK",
+          remarks: "Salary Payment",
+          reference: "NGS000000667911237829204",
+          status: "Transfer Successful",
+          date: "Apr 25, 2025, 09:00AM",
+        },
+        {
+          id: 4,
+          amount: "-₦1,200.00",
+          beneficiary: "Supermart NG",
+          bank: "GTBank",
+          accountNumber: "4005678901",
+          type: "POS PAYMENT",
+          remarks: "Groceries Purchase",
+          reference: "NGS000000667911237829205",
+          status: "Transfer Successful",
+          date: "Apr 26, 2025, 03:45PM",
+        },
+        {
+          id: 5,
+          amount: "+₦15,500.00",
+          beneficiary: "Michael Johnson",
+          bank: "First Bank",
+          accountNumber: "5006789012",
+          type: "INTER-BANK",
+          remarks: "Loan Repayment",
+          reference: "NGS000000667911237829206",
+          status: "Transfer Successful",
+          date: "Apr 27, 2025, 08:20AM",
+        },
+        {
+          id: 6,
+          amount: "-₦800.00",
+          beneficiary: "Airtime Purchase",
+          bank: "MTN Mobile",
+          accountNumber: "N/A",
+          type: "Airtime",
+          remarks: "Airtime Recharge",
+          reference: "NGS000000667911237829207",
+          status: "Transfer Successful",
+          date: "Apr 28, 2025, 07:15PM",
+        },
+      ];
+      console.log("Transaction List:", transactionList);
+
+      
+    useEffect(() => {
+      setTransactionList(transactions);
+    }, [transactions]);
+
+    const handleTransactionClick = (transaction) => {
+        navigate("/home3", { state: transaction });
+      };
    
 const handleFooterClick = (index) => {
   setActiveIndex(index);
 };
 
-     const [showBalance, setShowBalance] = useState(true);
+const [balance, setBalance] = useState(50000);
+const [lastUpdated, setLastUpdated] = useState(new Date());
+
+
+const updateBalance = (amount) => {
+  setBalance((prevBalance) => prevBalance + amount);
+  setLastUpdated(new Date()); 
+};
+
+const formatTime = (date) => {
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+};
+
 const [activeIndex, setActiveIndex] = useState(null);
 
       const [indicatorPosition, setIndicatorPosition] = useState(0);
@@ -91,10 +188,35 @@ const [activeIndex, setActiveIndex] = useState(null);
         { title: "Cards", icon: <PiCreditCard /> },
         { title: "More", icon: <FiGrid /> },
       ];
+   
+      const formatDate = (dateString) => {
+        if (!dateString) return "Unknown Date";
+      
+        try {
+          const parsedDate = parse(dateString, "MMM dd, yyyy, hh:mma", new Date());
+          
+          return format(parsedDate, "EEE, MMM dd, yyyy, hh:mm a"); 
+        } catch (error) {
+          console.error("Error parsing date:", dateString, error);
+          return "Invalid Date";
+        }
+      };
+      
+      const groupedTransactions = transactionList?.reduce((acc, transaction) => {
+        if (!transaction || !transaction.date) return acc; 
+        const date = formatDate(transaction.date);
+        if (!acc[date]) acc[date] = [];
+        acc[date].push(transaction);
+        
+        return acc;
+      }, {});
+      
+      console.log("Grouped Transactions:", groupedTransactions); 
+      
+   
   return (
     <div className="flex flex-col items-center px-4 sm:px-6 md:px-8 lg:px-12 py-6 w-full max-w-screen-xl mx-auto">
       <div className="relative w-full max-w-5xl min-h-[50vh] bg-gradient-to-l from-[#22A1F7] to-[#002F73] rounded-tl-3xl rounded-tr-3xl shadow-lg p-6">
-        {/* Header */}
         <div className="flex items-center justify-between text-white">
           <div className="flex items-center gap-3">
             <FaRegUserCircle className="text-2xl lg:text-4xl" />
@@ -109,16 +231,17 @@ const [activeIndex, setActiveIndex] = useState(null);
           </div>
         </div>
 
-        {/* Balance Section */}
         <div className="text-white mt-6">
           <h2 className="font-thin text-base lg:text-xl">Total Balance</h2>
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl lg:text-4xl font-bold">₦50,000</h1>
+          <h1 className="text-2xl lg:text-4xl font-bold">₦{balance.toLocaleString()}</h1>
             <button className="w-12 h-12 lg:w-16 lg:h-16 shadow-md rounded-full flex items-center justify-center">
               <HiDotsHorizontal className="text-2xl lg:text-3xl" />
             </button>
           </div>
-          <h4 className="font-thin text-sm lg:text-lg">Last updated just now.</h4>
+          <h4 className="font-thin text-sm lg:text-lg">
+        Last updated at {formatTime(lastUpdated)}
+      </h4>
         </div>
            
                 <div className="absolute bottom-0 w-full max-w-[90%] md:max-w-[80%] lg:max-w-[95%] mx-auto h-14 md:h-16 lg:h-20 bg-[#3D87E6] rounded-tl-2xl rounded-tr-2xl overflow-hidden flex justify-between items-center px-6">
@@ -213,38 +336,35 @@ const [activeIndex, setActiveIndex] = useState(null);
 </div>
   </div>
   
-            
-            
-
-      {/* Transaction History */}
-      <div className="mt-8 sm:mt-10 md:mt-12 w-full">
-        <h1 className="text-[#3A3C4C] text-xl font-semibold">Today</h1>
-        
-        <div className="mt-3 space-y-4">
-          {transactions.map((transaction) => (
-            <div
-              key={transaction.id}
-              className="flex items-center justify-between px-4 py-3 bg-gray-100 rounded-lg shadow-md"
-            >
-              <div>
-                <h1 className="text-lg font-semibold">{transaction.type}</h1>
-                <p className="text-sm text-[#7D7C93]">{transaction.date}</p>
-              </div>
-              <div className="text-right">
-                <h1 className={`text-lg font-bold ${transaction.amount.startsWith("+") ? "text-green-600" : "text-red-600"}`}>
-                  {transaction.amount}
-                </h1>
-                <p className="text-sm text-[#7D7C93]">{transaction.status}</p>
-              </div>
+  <div className="mt-8 sm:mt-10 md:mt-12 w-full">
+  {Object.entries(groupedTransactions).map(([date, transactions]) => (
+    <div key={date} className="mt-6">
+      <h1 className="text-[#3A3C4C] text-xl font-semibold">{date}</h1> 
+      <div className="mt-3 space-y-4">
+        {transactions.map((transaction) => (
+          <div
+            key={transaction.id}
+            onClick={() => handleTransactionClick(transaction)}
+            className="flex items-center justify-between px-4 py-3 bg-gray-100 rounded-lg shadow"
+          >
+            <div>
+              <h2 className="text-lg font-medium">{transaction.beneficiary}</h2>
+              <p className="text-sm text-gray-600">{formatDate(transaction.date)}</p>
             </div>
-          ))}
-        </div>
+            <p className={`text-lg font-bold ${transaction.amount.startsWith("+") ? "text-green-500" : "text-red-500"}`}>
+              {transaction.amount}
+            </p>
+          </div>
+        ))}
       </div>
+    </div>
+  ))}
+</div>
+
+
       <div className="mt-5">
         <button className=" w-[335px] h-[48px] bg-gradient-to-l from-[#22A1F7] to-[#002F73] rounded-lg text-white"> See All Transactions</button>
       </div>
-
-      {/* Footer */}
       <div className="relative w-full flex flex-col mt-6 px-2 sm:px-4">
         <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
           <div

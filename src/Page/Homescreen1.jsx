@@ -18,9 +18,10 @@ import { FiGrid } from "react-icons/fi";
 import { GiCoins } from "react-icons/gi";
 import { GiMoneyStack } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-const Homescreen1 = ({addTransaction}) => {
+const Homescreen1 = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [indicatorPosition, setIndicatorPosition] = useState(0);
   const itemsRef = useRef([]);
@@ -66,6 +67,23 @@ const Homescreen1 = ({addTransaction}) => {
       icon: <GiMoneyStack />
     },
   ];
+  const navigate = useNavigate();
+
+  const handleTransaction = () => {
+    const newTransaction = {
+      id: "123456", 
+      amount: "₦2,500.00",
+      beneficiary: "NGOZI UCHE",
+      bank: "UNITED BANK OF AFRICA PLC",
+      accountNumber: "2007895421",
+      type: "INTER-BANK",
+      remarks: "Money for transport",
+      reference: "NGS000000667911237829202",
+      status: "Transfer Successful",
+      date: "Apr 23, 2025, 12:35PM",
+    };
+    navigate("/transactions", { state: { transaction: newTransaction } });
+  };
 
   const access = [
     { title: "Airtime", icon: <IoCall className="text-[#facc50]" /> },
@@ -144,6 +162,7 @@ const Homescreen1 = ({addTransaction}) => {
           <div className="flex flex-col items-center">
             <button className="w-[80px] h-[80px] bg-[#F1F5F9] rounded-full flex justify-center items-center text-[#235697]">
               <PiCreditCard className="text-3xl md:text-4xl" />
+              
             </button>
             <h1 className="mt-2 text-sm font-medium text-gray-700">My Cards</h1>
           </div>
