@@ -22,6 +22,9 @@ import AccountConfirmation from "./components/AccountConfirmation";
 import Login from "./components/Login";
 // import Morepage from "./Page/Morepage"
 import Logout from "./components/logout";
+import Morepage from "./Page/Morepage"
+// import Morepage from "./Page/Morepage"
+
 
 const App = () => {
   return (
@@ -47,7 +50,7 @@ const App = () => {
         <Route path="/Submit" element={<SubmissionScreen />} />
         <Route path="/Confirmation" element={<AccountConfirmation />} />
         <Route path="/login" element={<Login/>} />
-        {/* <Route path="/more" element={<Morepage />} /> */}
+        <Route path="/more" element={<Morepage/>} />
         <Route path="/logout" element={<Logout/>} />
       </Routes>
     </Router>

@@ -38,7 +38,7 @@ const Homescreen1 = ({ transactions }) => {
   const [showBalance, setShowBalance] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(() => user?.lastUpdated ? new Date(user.lastUpdated) : new Date());
   const [activeIndex, setActiveIndex] = useState(null);
-  const [indicatorPosition, setIndicatorPosition] = useState(0);
+ 
   const itemsRef = useRef([]);
   const containerRef = useRef(null);
 
@@ -161,12 +161,25 @@ const Homescreen1 = ({ transactions }) => {
   ];
 
   const footer = [
-    { title: "Home", icon: <GoHomeFill /> },
-    { title: "Send", icon: <BsSend /> },
-    { title: "Invest", icon: <BsBarChartFill /> },
-    { title: "Cards", icon: <PiCreditCard /> },
-    { title: "More", icon: <FiGrid />, path:"more" },
+    { title: "Home", icon: <GoHomeFill />, path: "/home" },
+    { title: "Send", icon: <BsSend />, path: "/send" },
+    { title: "Invest", icon: <BsBarChartFill />, path: "/invest" },
+    { title: "Cards", icon: <PiCreditCard />, path: "/cards" },
+    { title: "More", icon: <FiGrid />, path: "/more" },
   ];
+
+  const handleClick = (item) => {
+    if (item.path) {
+      navigate(item.path);
+    }
+  };
+  const indicatorPosition = activeIndex !== null 
+  ? itemsRef.current[activeIndex]?.offsetLeft + 
+    itemsRef.current[activeIndex]?.offsetWidth / 2 - 
+    25 
+  : 0;
+
+
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 py-6 w-full max-w-screen-xl mx-auto">
@@ -379,62 +392,52 @@ const Homescreen1 = ({ transactions }) => {
   )}
 </div>
 
-
-        <div className="sticky bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50 mt-11">
-          <div className="relative w-full flex flex-col">
-            <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
-              <div
-                className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
-                style={{
-                  width: "50px",
-                  left: activeIndex !== null ? `${indicatorPosition}px` : "0px",
-                  opacity: activeIndex !== null ? 1 : 0,
-                  transform:
-                    activeIndex !== null
-                      ? "translateX(0)"
-                      : "translateX(-25px)",
-                }}
-              ></div>
-            </div>
-
-            <div
-              ref={containerRef}
-              className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative py-2"
-            >
-              {footer.map((item, index) => (
-                <Link>
-                   <div
-                  key={index}
-                  ref={(el) => (itemsRef.current[index] = el)}
-                  className="flex flex-col items-center cursor-pointer relative group px-1 sm:px-2 py-2"
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(null)}
-                >
-                  <h1
-                    className={`transition-all duration-300 ${
-                      activeIndex === index
-                        ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
-                        : "text-[#7D7C93]"
-                    } text-xl sm:text-2xl font-bold`}
-                  >
-                    {item.icon}
-                  </h1>
-                  <h1
-                    className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
-                      activeIndex === index
-                        ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
-                        : "text-[#7D7C93]"
-                    }`}
-                  >
-                    {item.title}
-                  </h1>
-                </div>
-                </Link>
-             
-              ))}
-            </div>
-          </div>
+<div className="sticky bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50 mt-11">
+      <div className="relative w-full flex flex-col">
+        <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
+          <div
+            className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
+            style={{
+              width: "50px",
+              left: `${indicatorPosition}px`,
+              opacity: activeIndex !== null ? 1 : 0,
+              transform: activeIndex !== null ? "translateX(0)" : "translateX(-25px)",
+            }}
+          />
         </div>
+
+        <div
+          ref={containerRef}
+          className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative py-2"
+        >
+          {footer.map((item, index) => (
+            <div
+              key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
+              onClick={() => handleClick(item)}
+              className={`flex flex-col items-center px-1 sm:px-2 py-2 cursor-pointer`}
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(null)}
+            >
+              <h1 className={`transition-all duration-300 ${
+                activeIndex === index
+                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
+                  : "text-[#7D7C93]"
+              } text-xl sm:text-2xl font-bold`}>
+                {item.icon}
+              </h1>
+              <h1 className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
+                activeIndex === index
+                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
+                  : "text-[#7D7C93]"
+              }`}>
+                {item.title}
+              </h1>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
       </div>
     </div>
   );
