@@ -38,7 +38,7 @@ const Homescreen1 = ({ transactions }) => {
   const [showBalance, setShowBalance] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(() => user?.lastUpdated ? new Date(user.lastUpdated) : new Date());
   const [activeIndex, setActiveIndex] = useState(null);
- 
+  const [indicatorPosition, setIndicatorPosition] = useState(0);
   const itemsRef = useRef([]);
   const containerRef = useRef(null);
 
@@ -173,12 +173,6 @@ const Homescreen1 = ({ transactions }) => {
       navigate(item.path);
     }
   };
-  const indicatorPosition = activeIndex !== null 
-  ? itemsRef.current[activeIndex]?.offsetLeft + 
-    itemsRef.current[activeIndex]?.offsetWidth / 2 - 
-    25 
-  : 0;
-
 
 
   return (
@@ -392,6 +386,7 @@ const Homescreen1 = ({ transactions }) => {
   )}
 </div>
 
+
 <div className="sticky bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50 mt-11">
       <div className="relative w-full flex flex-col">
         <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
@@ -415,7 +410,9 @@ const Homescreen1 = ({ transactions }) => {
               key={index}
               ref={(el) => (itemsRef.current[index] = el)}
               onClick={() => handleClick(item)}
-              className={`flex flex-col items-center px-1 sm:px-2 py-2 cursor-pointer`}
+              className={`flex flex-col items-center px-1 sm:px-2 py-2 ${
+                item.path ? 'cursor-pointer' : 'cursor-default'
+              }`}
               onMouseEnter={() => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
             >
