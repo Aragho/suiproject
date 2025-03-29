@@ -1,27 +1,42 @@
 import { FiLogOut, FiSettings, FiUser, FiHelpCircle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function MorePage() {
+  const navigate = useNavigate();
+
   return (
     <div className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-6">More Options</h1>
       
       <div className="space-y-3">
-        <button className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200">
+        <button 
+          onClick={() => navigate("/profile")}
+          className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200"
+        >
           <FiUser className="mr-3 text-lg" />
           <span>Profile Settings</span>
         </button>
         
-        <button className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200">
+        <button 
+          onClick={() => navigate("/settings")}
+          className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200"
+        >
           <FiSettings className="mr-3 text-lg" />
           <span>App Settings</span>
         </button>
         
-        <button className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200">
+        <button 
+          onClick={() => navigate("/help")}
+          className="flex items-center w-full p-3 rounded-lg bg-gray-100 hover:bg-gray-200"
+        >
           <FiHelpCircle className="mr-3 text-lg" />
           <span>Help & Support</span>
         </button>
         
-        <button className="flex items-center w-full p-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-600">
+        <button 
+          onClick={() => navigate("/logout")}
+          className="flex items-center w-full p-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-600"
+        >
           <FiLogOut className="mr-3 text-lg" />
           <span>Log Out</span>
         </button>
