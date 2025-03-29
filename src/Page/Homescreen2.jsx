@@ -362,52 +362,59 @@ const [activeIndex, setActiveIndex] = useState(null);
 </div>
 
 
-      <div className="mt-5">
-        <button className=" w-[335px] h-[48px] bg-gradient-to-l from-[#22A1F7] to-[#002F73] rounded-lg text-white"> See All Transactions</button>
-      </div>
-      <div className="relative w-full flex flex-col mt-6 px-2 sm:px-4">
-        <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
-          <div
-            className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
-            style={{
-              width: "50px",
-              left: activeIndex !== null ? `${indicatorPosition}px` : "0px",
-              opacity: activeIndex !== null ? 1 : 0,
-              transform: activeIndex !== null ? 'translateX(0)' : 'translateX(-25px)'
-            }}
-          ></div>
-        </div>
+<div className="mt-5 mb-[80px]"> {/* Add bottom margin to create space */}
+  <button className="w-[335px] h-[48px] bg-gradient-to-l from-[#22A1F7] to-[#002F73] rounded-lg text-white">
+    See All Transactions
+  </button>
+</div>
 
-        <div 
-          ref={containerRef}
-          className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative"
+<div className="fixed bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50">
+  <div className="relative w-full flex flex-col">
+    <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
+      <div
+        className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
+        style={{
+          width: "50px",
+          left: activeIndex !== null ? `${indicatorPosition}px` : "0px",
+          opacity: activeIndex !== null ? 1 : 0,
+          transform: activeIndex !== null ? "translateX(0)" : "translateX(-25px)"
+        }}
+      ></div>
+    </div>
+
+    <div ref={containerRef} className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative py-2">
+      {footer.map((item, index) => (
+        <div
+          key={index}
+          ref={el => (itemsRef.current[index] = el)}
+          className="flex flex-col items-center cursor-pointer relative group px-1 sm:px-2 py-2"
+          onMouseEnter={() => setActiveIndex(index)}
+          onMouseLeave={() => setActiveIndex(null)}
         >
-          {footer.map((item, index) => (
-            <div
-              key={index}
-              ref={el => itemsRef.current[index] = el}
-              className="flex flex-col items-center cursor-pointer relative group px-1 sm:px-2 py-2"
-              onMouseEnter={() => setActiveIndex(index)}
-              onMouseLeave={() => setActiveIndex(null)}
-            >
-              <h1 className={`transition-all duration-300 ${
-                activeIndex === index
-                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
-                  : "text-[#7D7C93]"
-              } text-xl sm:text-2xl font-bold`}>
-                {item.icon}
-              </h1>
-              <h1 className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
-                activeIndex === index
-                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
-                  : "text-[#7D7C93]"
-              }`}>
-                {item.title}
-              </h1>
-            </div>
-          ))}
+          <h1
+            className={`transition-all duration-300 ${
+              activeIndex === index
+                ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
+                : "text-[#7D7C93]"
+            } text-xl sm:text-2xl font-bold`}
+          >
+            {item.icon}
+          </h1>
+          <h1
+            className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
+              activeIndex === index
+                ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
+                : "text-[#7D7C93]"
+            }`}
+          >
+            {item.title}
+          </h1>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };
