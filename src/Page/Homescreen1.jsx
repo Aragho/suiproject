@@ -165,7 +165,7 @@ const Homescreen1 = ({ transactions }) => {
     { title: "Send", icon: <BsSend /> },
     { title: "Invest", icon: <BsBarChartFill /> },
     { title: "Cards", icon: <PiCreditCard /> },
-    { title: "More", icon: <FiGrid /> },
+    { title: "More", icon: <FiGrid />,},
   ];
 
   return (
@@ -190,6 +190,7 @@ const Homescreen1 = ({ transactions }) => {
             )}
           </div>
         </div>
+     
       </div>
 
       <div className="text-white mt-6">
@@ -211,7 +212,7 @@ const Homescreen1 = ({ transactions }) => {
         </div>
         <div className="flex items-center justify-between">
           <h4 className="font-thin text-sm lg:text-lg leading-[150%] tracking-[-2%]">
-            Last updated {formatTime(lastUpdated)}
+            Last updated: {formatTime(lastUpdated)}
           </h4>
           <BiHide 
             className="text-2xl lg:text-3xl cursor-pointer" 
@@ -379,58 +380,60 @@ const Homescreen1 = ({ transactions }) => {
 </div>
 
 
-        <div className="sticky bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50 mt-11">
-          <div className="relative w-full flex flex-col">
-            <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
-              <div
-                className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
-                style={{
-                  width: "50px",
-                  left: activeIndex !== null ? `${indicatorPosition}px` : "0px",
-                  opacity: activeIndex !== null ? 1 : 0,
-                  transform:
-                    activeIndex !== null
-                      ? "translateX(0)"
-                      : "translateX(-25px)",
-                }}
-              ></div>
-            </div>
+<div className="sticky bottom-0 left-0 w-full bg-white shadow-md px-2 sm:px-4 z-50 mt-11">
+  <div className="relative w-full flex flex-col">
+    <div className="absolute -top-1 left-0 right-0 w-full h-[3px] bg-gray-300 rounded-full">
+      <div
+        className="absolute h-[3px] bg-[#18A0FB] rounded-full transition-all duration-300"
+        style={{
+          width: "50px",
+          left: activeIndex !== null ? `${indicatorPosition}px` : "0px",
+          opacity: activeIndex !== null ? 1 : 0,
+          transform: activeIndex !== null ? "translateX(0)" : "translateX(-25px)",
+        }}
+      ></div>
+    </div>
 
-            <div
-              ref={containerRef}
-              className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative py-2"
+    <div
+      ref={containerRef}
+      className="grid grid-cols-5 gap-1 sm:gap-2 text-[#7D7C93] relative py-2"
+    >
+      {footer.map((item, index) => (
+        <Link 
+          to={item.path || `/${item.title.toLowerCase()}`} 
+          key={index}
+          className="flex flex-col items-center cursor-pointer relative group px-1 sm:px-2 py-2"
+          onMouseEnter={() => setActiveIndex(index)}
+          onMouseLeave={() => setActiveIndex(null)}
+        >
+          <div
+            ref={(el) => (itemsRef.current[index] = el)}
+            className="flex flex-col items-center"
+          >
+            <h1
+              className={`transition-all duration-300 ${
+                activeIndex === index
+                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
+                  : "text-[#7D7C93]"
+              } text-xl sm:text-2xl font-bold`}
             >
-              {footer.map((item, index) => (
-                <div
-                  key={index}
-                  ref={(el) => (itemsRef.current[index] = el)}
-                  className="flex flex-col items-center cursor-pointer relative group px-1 sm:px-2 py-2"
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(null)}
-                >
-                  <h1
-                    className={`transition-all duration-300 ${
-                      activeIndex === index
-                        ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] bg-clip-text text-transparent"
-                        : "text-[#7D7C93]"
-                    } text-xl sm:text-2xl font-bold`}
-                  >
-                    {item.icon}
-                  </h1>
-                  <h1
-                    className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
-                      activeIndex === index
-                        ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
-                        : "text-[#7D7C93]"
-                    }`}
-                  >
-                    {item.title}
-                  </h1>
-                </div>
-              ))}
-            </div>
+              {item.icon}
+            </h1>
+            <h1
+              className={`transition-all duration-300 mt-1 text-xs sm:text-sm font-medium ${
+                activeIndex === index
+                  ? "bg-gradient-to-l from-[#18A0FB] to-[#0A3A5A] text-transparent bg-clip-text"
+                  : "text-[#7D7C93]"
+              }`}
+            >
+              {item.title}
+            </h1>
           </div>
-        </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+  </div>
       </div>
     </div>
   );

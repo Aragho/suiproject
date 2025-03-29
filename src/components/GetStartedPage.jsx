@@ -18,31 +18,32 @@ export default function GetStartedPage() {
       [e.target.name]: e.target.value
     }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    const userExists = users.some(user => user.email === formData.email);
+const handleSubmit = (e) => {
+  e.preventDefault();
   
-    if (userExists) {
-      navigate("/login", { state: { email: formData.email } });
-    } else {
-      
-      const newUser = {
-        ...formData,
-        name: "", 
-        accountNumber: Math.floor(1000000000 + Math.random() * 9000000000), 
-        balance: 0,
-        transactions: []
-      };
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  const userExists = users.some(user => user.email === formData.email);
 
-      users.push(newUser);
-      localStorage.setItem("users", JSON.stringify(users));
-      
-      navigate("/create-password");
-    }
-  };
-  
+  if (userExists) {
+    navigate("/login", { state: { email: formData.email } });
+  } else {
+    // Save user data with placeholders for missing details
+    const newUser = {
+      ...formData,
+      name: "", // Add this field for consistency
+      accountNumber: Math.floor(1000000000 + Math.random() * 9000000000), // Generate a 10-digit account number
+      balance: 0,
+      transactions: []
+    };
+
+    // Add the new user to the local storage users array
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    navigate("/create-password");
+  }
+};
+
 
   return (
     <div className="flex flex-col w-full min-h-screen p-6">
