@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { FiLogOut, FiSettings, FiUser, FiHelpCircle } from "react-icons/fi";
 
-export default function MorePage() {
+export default function Morepage() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
