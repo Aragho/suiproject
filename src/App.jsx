@@ -20,7 +20,7 @@ import SubmissionScreen from "./components/SubmissionScreen";
 import GetStartedPage from "./components/GetStartedPage";
 import AccountConfirmation from "./components/AccountConfirmation";
 import Login from "./components/Login";
-import MorePage from "./Page/Morepage";
+import MorePage from "./Page/Morepage"
 import Logout from "./components/logout";
 
 const App = () => {
@@ -47,7 +47,7 @@ const App = () => {
         <Route path="/Submit" element={<SubmissionScreen />} />
         <Route path="/Confirmation" element={<AccountConfirmation />} />
         <Route path="/login" element={<Login/>} />
-        <Route path="/more" element={<MorePage/>} />
+        <Route path="/more" element={<MorePage />} />
         <Route path="/logout" element={<Logout/>} />
       </Routes>
     </Router>
